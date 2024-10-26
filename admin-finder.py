@@ -73,6 +73,8 @@ def check_admin_login(url, admin_paths):
         "Page Not Found",
         "Error 404",
         "This page could not be found"
+        "create-react-app", 
+        "You need to enable JavaScript to run this app."
     ]
     for path in admin_paths:
         test_url = urljoin(url, path)
