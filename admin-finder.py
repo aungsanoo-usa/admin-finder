@@ -61,7 +61,7 @@ asp_admin_paths = [
 ]
 
 admin_subdomains = [
-    "admin", "cpanel", "webmail", "dashboard", "manage", "controlpanel", 
+    "admin", "cpanel", "webmail", "dashboard", "manage", "controlpanel", "adminpanel",
     "secure", "portal", "support", "helpdesk", "login", "webadmin", "staff"
 ]
 
