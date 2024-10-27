@@ -4,11 +4,14 @@ from urllib.parse import urljoin
 from colorama import Fore, Style, init
 from requests.exceptions import ConnectionError
 
+# Initialize colorama for cross-platform support
 init(autoreset=True)
 
+# Creator information
 creator_name = "Aung San Oo"
 creator_website = "https://aungsanoo.com"
 
+# Display creator information
 print(f"{Fore.CYAN}Admin Login Finder Tool")
 print(f"Created by: {creator_name}")
 print(f"Website: {creator_website}{Style.RESET_ALL}\n")
@@ -61,30 +64,30 @@ asp_admin_paths = [
 ]
 
 admin_subdomains = [
-    "admin", "cpanel", "webmail", "dashboard", "manage", "controlpanel", "adminpanel",
+    "admin", "cpanel", "webmail", "dashboard", "manage", "controlpanel", "adminpanel", 
     "secure", "portal", "support", "helpdesk", "login", "webadmin", "staff"
 ]
 
+def is_login_page(content):
+    # Check for keywords indicating a login page
+    login_keywords = ["login", "sign in", "authentication", "password", "username"]
+    if any(keyword.lower() in content.lower() for keyword in login_keywords):
+        return True
+
+    # Check if there is a form with input fields for username and password
+    if "<form" in content.lower() and ("password" in content.lower() or "username" in content.lower()):
+        return True
+
+    return False
+
 def check_admin_login(url, admin_paths):
     found_admin_panels = []
-    false_positive_texts = [
-        "The page you were looking for doesn't exist", 
-        "404 Not Found", 
-        "Page Not Found",
-        "Error 404",
-        "This page could not be found"
-        "create-react-app", 
-        "You need to enable JavaScript to run this app."
-    ]
     for path in admin_paths:
         test_url = urljoin(url, path)
         print(f"{Fore.YELLOW}Scanning: {test_url}{Style.RESET_ALL}")
         try:
             response = requests.get(test_url, verify=True)
-            if response.status_code == 200:
-                if any(false_text in response.text for false_text in false_positive_texts):
-                    print(f"{Fore.RED}[-] False positive detected at: {test_url}{Style.RESET_ALL}")
-                    continue
+            if response.status_code == 200 and is_login_page(response.text):
                 found_admin_panels.append(test_url)
                 print(f"{Fore.GREEN}[+] Admin login found: {test_url}{Style.RESET_ALL}")
             elif response.status_code == 403:
@@ -123,7 +126,7 @@ def main():
     args = parser.parse_args()
     url = args.url.strip()
     
-    domain = url.split("//")[-1].split("/")[0]  
+    domain = url.split("//")[-1].split("/")[0]  # Extract domain name
 
     print("Choose Technology:")
     print("1. PHP")
@@ -145,12 +148,15 @@ def main():
         print("[-] Invalid choice for technology. Please restart the tool and choose a valid option.")
         return
 
+    # Check admin panels for the main domain
     print(f"{Fore.CYAN}[*] Checking main domain for admin panels...{Style.RESET_ALL}")
     main_domain_panels = check_admin_login(url, admin_paths)
     
+    # Check admin panels for common subdomains
     print(f"{Fore.CYAN}[*] Checking common admin subdomains for admin panels...{Style.RESET_ALL}")
     subdomain_panels = check_admin_subdomains(domain, admin_paths)
     
+    # Combine results
     all_found_panels = main_domain_panels + subdomain_panels
 
     if not all_found_panels:
