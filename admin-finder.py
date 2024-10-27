@@ -17,11 +17,11 @@ print(f"Created by: {creator_name}")
 print(f"Website: {creator_website}{Style.RESET_ALL}\n")
 
 generic_admin_paths = [
-    "admin/", "admin/login", "administrator/", "admin1/", "admin2/", 
+    "admin/", "admin/login", "administrator/", "admin1/", "admin2/", "user/login",
     "admin3/", "admin4/", "admin5/", "usuarios/", "usuario/", "administrator", 
     "moderator/", "webadmin/", "adminarea/", "bb-admin/", "adminLogin/", 
     "admin_area/", "panel-administracion/", "instadmin/", "memberadmin/", "wp-admin",
-    "/admin.%XT%", "/login/", "/login.%XT%", "/adm/", "/admin/", "phpinfo.php",
+    "/admin.%XT%", "/login/", "/login.%XT%", "/adm/", "/admin/", "phpinfo.php", "site/login",
     "/adminitem/", "/adminitem.%XT%", "/adminitems/", "/adminitems.%XT%", 
     "/administrator.%XT%", "/administration/", "/administration.%XT%", 
     "/adminLogin/", "/adminlogin.%XT%", "/admin_area/admin.%XT%", "/admin_area/",
